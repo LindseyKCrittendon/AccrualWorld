@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AccrualWorld.Data;
 using AccrualWorld.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AccrualWorld.Controllers
 {
@@ -14,16 +15,33 @@ namespace AccrualWorld.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public ExpensesController(ApplicationDbContext context)
+        // Add private field to hold our user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public ExpensesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        // Get the currently logged in user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Expenses
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Expenses.Include(e => e.ExpenseType).Include(e => e.User);
-            return View(await applicationDbContext.ToListAsync());
+            //Added user information to only show information for the correct user
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            var expense = await _context.Expenses
+                .Include(et => et.ExpenseType)
+                .Include(u => u.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
+                .ToListAsync();
+            return View(expense);
+
+            //var applicationDbContext = _context.Expenses.Include(e => e.ExpenseType).Include(e => e.User);
+            //return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Expenses/Details/5

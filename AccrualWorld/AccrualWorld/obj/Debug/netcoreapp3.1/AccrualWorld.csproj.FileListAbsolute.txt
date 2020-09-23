@@ -185,3 +185,8 @@ C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\AccrualWorld.csproj.CoreCompileInputs.cache
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\AccrualWorld.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\AccrualWorld.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\Expenses\Create.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\Expenses\Delete.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\Expenses\Details.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\Expenses\Edit.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\Expenses\Index.cshtml.g.cs
