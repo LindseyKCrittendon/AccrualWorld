@@ -81,6 +81,9 @@ namespace AccrualWorld.Controllers
         {
             if (ModelState.IsValid)
             {
+                //add user to get the user information
+                var user = await GetCurrentUserAsync();
+                expense.UserId = user.Id;
                 _context.Add(expense);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -124,6 +127,8 @@ namespace AccrualWorld.Controllers
             {
                 try
                 {
+                    var user = await GetCurrentUserAsync();
+                    expense.UserId = user.Id;
                     _context.Update(expense);
                     await _context.SaveChangesAsync();
                 }
