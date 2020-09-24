@@ -28,7 +28,7 @@ namespace AccrualWorld.Controllers
         // GET: ExpenseTypes
         public async Task<IActionResult> Index()
         {
-
+            //TODO:: GET THE CREATE FORM FOR EXPENSES TO LEAD TO THE INDEX VIEW FOR EXPENSE TYPES
             var ExpenseType = await _context.ExpenseTypes
                 .Include(e => e.Expenses)
                 .ToListAsync();
@@ -40,6 +40,7 @@ namespace AccrualWorld.Controllers
         // GET: ExpenseTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //TODO:: SPLIT UP PRODUCTS BY MONTH AND YEAR AND ADD A TOTAL FOR MONTH AND YEAR
             if (id == null)
             {
                 return NotFound();
