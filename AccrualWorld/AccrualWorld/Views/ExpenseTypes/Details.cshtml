@@ -21,11 +21,11 @@
     <ul>
         @foreach (Expense item in Model.Expenses)
         {
-            <li>Date Purchased: @item.DateTime      |       Total: $@item.Total  </li>
+            <li><strong>Date Purchased:</strong> @item.DateTime    |   <strong>Total:</strong> $@item.Total</li>
         }
     </ul>
-    <p><strong>Total Expense for Month:</strong> $@Model.Expenses.Sum(i => i.Total)</p>
-    <p><strong>Total Expense for Year:</strong> $@Model.Expenses.Sum(i => i.Total)</p>
+    <p><strong>Current Total Expense for Month:</strong> $@Model.Expenses.Where(i=> i.DateTime.ToString().Contains(DateTime.Now.Month.ToString())).Sum(i => i.Total)</p>
+    <p><strong>Current Total Expense for Year:</strong> $@Model.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total)</p>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ExpenseTypeId">Edit</a> |
