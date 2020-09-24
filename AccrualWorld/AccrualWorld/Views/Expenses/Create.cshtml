@@ -1,10 +1,10 @@
-﻿@model AccrualWorld.Models.Expense
+﻿@model AccrualWorld.Models.ExpenseViewModels.ExpenseCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Add an Expense</h1>
 
 <h4>Expense</h4>
 <hr />
@@ -13,37 +13,35 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ExpenseTypeId" class="control-label"></label>
-                <select asp-for="ExpenseTypeId" class ="form-control" asp-items="ViewBag.ExpenseTypeId"></select>
+                <label asp-for="expense.ExpenseTypeId" class="control-label"></label>
+                <select asp-for="expense.ExpenseTypeId" class ="form-control" asp-items="@Model.expenseTypes"></select>
+                <span asp-validation-for="expense.ExpenseTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Total" class="control-label"></label>
-                <input asp-for="Total" class="form-control" />
-                <span asp-validation-for="Total" class="text-danger"></span>
+                <label asp-for="expense.Total" class="control-label"></label>
+                <input asp-for="expense.Total" class="form-control" />
+                <span asp-validation-for="expense.Total" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
-                <span asp-validation-for="DateTime" class="text-danger"></span>
+                <label asp-for="expense.DateTime" class="control-label"></label>
+                <input asp-for="expense.DateTime" class="form-control" />
+                <span asp-validation-for="expense.DateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImagePath" class="control-label"></label>
-                <input asp-for="ImagePath" class="form-control" />
-                <span asp-validation-for="ImagePath" class="text-danger"></span>
+                <label asp-for="expense.ImagePath" class="control-label"></label>
+                <input asp-for="expense.ImagePath" class="form-control" />
+                <span asp-validation-for="expense.ImagePath" class="text-danger"></span>
             </div>
+          
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">View Current Expenses</a>
 </div>
 
 @section Scripts {

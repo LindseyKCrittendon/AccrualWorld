@@ -20,7 +20,7 @@ namespace AccrualWorld.Data
             get; set;
         }
 
-        public DbSet<ExpenseType> ExpeseTypes
+        public DbSet<ExpenseType> ExpenseTypes
         {
             get; set;
         }

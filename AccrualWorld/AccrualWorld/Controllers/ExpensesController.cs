@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AccrualWorld.Data;
 using AccrualWorld.Models;
 using Microsoft.AspNetCore.Identity;
+using AccrualWorld.Models.ExpenseViewModels;
 
 namespace AccrualWorld.Controllers
 {
@@ -67,9 +68,26 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Create
         public IActionResult Create()
         {
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpeseTypes, "ExpenseTypeId", "Label");
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
-            return View();
+            //create an instance of the ExpenseCreateViewModel to get the list of ExpenseTypes in dropdown
+            ExpenseCreateViewModel ViewModel = new ExpenseCreateViewModel();
+
+            //then use the view model rather than view data for more flexibility
+            ViewModel.expenseTypes = _context.ExpenseTypes.Select(c => new SelectListItem
+            {
+                Text = c.Label,
+                Value = c.ExpenseTypeId.ToString()
+            }
+            ).ToList();
+
+            //Forces user to select from the drop down
+            //Error displays if not due to data annotation on product type model
+            ViewModel.expenseTypes.Insert(0, new SelectListItem() { Value = "0", Text = "--Select Deduction Category--" });
+
+            return View(ViewModel);
+
+            //ViewData["ExpenseTypeId"] = new SelectList(_context.ExpeseTypes, "ExpenseTypeId", "Label");
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            //return View();
         }
 
         // POST: Expenses/Create
@@ -79,6 +97,12 @@ namespace AccrualWorld.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ExpenseId,ExpenseTypeId,Total,DateTime,ImagePath,UserId")] Expense expense)
         {
+            //adding user information automatically rather than in the form
+            ModelState.Remove("expense.User");
+            ModelState.Remove("expense.UserId");
+
+            ExpenseCreateViewModel ViewModel = new ExpenseCreateViewModel();
+
             if (ModelState.IsValid)
             {
                 //add user to get the user information
@@ -86,11 +110,21 @@ namespace AccrualWorld.Controllers
                 expense.UserId = user.Id;
                 _context.Add(expense);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //redirects to expense details view
+                return RedirectToAction("Details", new
+                {
+                    id = expense.ExpenseId
+                });
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpeseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
-            return View(expense);
+            ViewModel.expenseTypes = _context.ExpenseTypes.Select(c => new SelectListItem
+            {
+                Text = c.Label,
+                Value = c.ExpenseTypeId.ToString()
+            }).ToList();
+            return View(ViewModel);
+            //ViewData["ExpenseTypeId"] = new SelectList(_context.ExpeseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
+            //return View(expense);
         }
 
         // GET: Expenses/Edit/5
@@ -106,7 +140,7 @@ namespace AccrualWorld.Controllers
             {
                 return NotFound();
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpeseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
+            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
             return View(expense);
         }
@@ -145,7 +179,7 @@ namespace AccrualWorld.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpeseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
+            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
             return View(expense);
         }
