@@ -55,7 +55,7 @@ namespace AccrualWorld.Controllers
 
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
-                .Include(e => e.User)
+                //.Include(e => e.User)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {
