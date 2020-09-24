@@ -17,6 +17,13 @@
             @Html.DisplayFor(model => model.Label)
         </dd>
     </dl>
+    <h4>Expenses</h4>
+    <ul>
+        @foreach (Expense item in Model.Expenses)
+        {
+        <li>Date Purchased: @item.DateTime      |       Total: $@item.Total  </li>
+        }
+    </ul>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ExpenseTypeId">Edit</a> |
