@@ -1,0 +1,43 @@
+﻿@model AccrualWorld.Models.ExpenseType
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<h3>
+    @Model.Expenses.ToList()[0].DateTime.Month
+</h3>
+
+<a asp-controller="ExpenseTypes" asp-action="Index">Back</a>
+
+<div>
+    <h4>ExpenseType</h4>
+
+
+</div>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Label)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Label)
+    </dd>
+</dl>
+<h4>Expenses</h4>
+<ul>
+    @foreach (Expense item in Model.Expenses)
+    {
+        <li><strong>Date Purchased:</strong> @item.DateTime    |   <strong>Total:</strong> $@item.Total</li>
+        <a asp-controller="Expenses" asp-action="Edit" asp-route-id="@item.ExpenseId">Edit</a>
+    }
+</ul>
+<p><strong>Total Expense for this Month:</strong> $@Model.Expenses.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)</p>
+<p><strong>Total Expense for this Year:</strong> $@Model.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total)</p>
+</div>
+<div>
+    <a asp-controller="Expenses" asp-action="Create" class="btn btn-primary">Add an Expense</a>
+
+
+</div>
