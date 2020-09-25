@@ -26,11 +26,11 @@
             <a asp-controller = "Expenses" asp-action="Edit" asp-route-id="@item.ExpenseId">Edit</a>
         }
     </ul>
-    <p><strong>Current Total Expense for Month:</strong> $@Model.Expenses.Sum(i => i.Total)</p>
-    <p><strong>Current Total Expense for Year:</strong> $@Model.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total)</p>
+    <p><strong>Total Expense for this Month:</strong> $@Model.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Month.ToString()) && i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total)</p>
+    <p><strong>Total Expense for this Year:</strong> $@Model.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total)</p>
 </div>
 <div>
     <a asp-controller="Expenses" asp-action="Create" class="btn btn-primary">Add an Expense</a>
     
-    <a asp-controller="Expenses" asp-action="Index" class="btn btn-primary">View All Expenses</a>
+    
 </div>
