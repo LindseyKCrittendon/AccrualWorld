@@ -40,6 +40,8 @@ namespace AccrualWorld.Controllers
         // GET: ExpenseTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //TODO::  FIGURE OUT IF IT WOULD BE MORE USER FRIENDLY TO HAVE A DROP 
+            //DOWN BY HEAR IN THE DETAILS VIEW OR A SEARCH BAR TO SEARCH BY YEAR
             //TODO:: SPLIT UP PRODUCTS BY MONTH AND YEAR AND ADD A TOTAL FOR MONTH AND YEAR
             if (id == null)
             {
