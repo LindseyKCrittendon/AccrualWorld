@@ -5,6 +5,7 @@
 }
 
 <h1>Details</h1>
+<a asp-controller="ExpenseTypes" asp-action="Index">Back</a>
 
 <div>
     <h4>ExpenseType</h4>
@@ -22,12 +23,14 @@
         @foreach (Expense item in Model.Expenses)
         {
             <li><strong>Date Purchased:</strong> @item.DateTime    |   <strong>Total:</strong> $@item.Total</li>
+            <a asp-controller = "Expenses" asp-action="Edit" asp-route-id="@item.ExpenseId">Edit</a>
         }
     </ul>
     <p><strong>Current Total Expense for Month:</strong> $@Model.Expenses.Sum(i => i.Total)</p>
     <p><strong>Current Total Expense for Year:</strong> $@Model.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total)</p>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ExpenseTypeId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Expenses" asp-action="Create" class="btn btn-primary">Add an Expense</a>
+    
+    <a asp-controller="Expenses" asp-action="Index" class="btn btn-primary">View All Expenses</a>
 </div>
