@@ -130,19 +130,26 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var expense = await _context.Expenses.FindAsync(id);
-            if (expense == null)
+            ViewModel.expense = await _context.Expenses.FindAsync(id);
+            if (ViewModel.expense == null)
             {
                 return NotFound();
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
-            return View(expense);
+            ViewModel.expenseTypes = _context.ExpenseTypes.Select(c => new SelectListItem
+            {
+                Text = c.Label,
+                Value = c.ExpenseTypeId.ToString()
+            }
+            ).ToList();
+            //ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
+            return View(ViewModel);
         }
 
         // POST: Expenses/Edit/5
@@ -152,6 +159,10 @@ namespace AccrualWorld.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ExpenseId,ExpenseTypeId,Total,DateTime,ImagePath,UserId")] Expense expense)
         {
+            ModelState.Remove("expense.User");
+            ModelState.Remove("expense.UserId");
+
+            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
             if (id != expense.ExpenseId)
             {
                 return NotFound();
@@ -177,11 +188,19 @@ namespace AccrualWorld.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new
+                {
+                    id = expense.ExpenseId
+                });
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
-            return View(expense);
+            ViewModel.expenseTypes = _context.ExpenseTypes.Select(c => new SelectListItem
+            {
+                Text = c.Label,
+                Value = c.ExpenseTypeId.ToString()
+            }).ToList();
+            //ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
+            return View(ViewModel);
         }
 
         // GET: Expenses/Delete/5
