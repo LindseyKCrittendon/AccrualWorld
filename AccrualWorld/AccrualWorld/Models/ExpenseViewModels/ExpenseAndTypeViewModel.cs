@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AccrualWorld.Models.ExpenseViewModels
 {
-    public class ExpenseCreateViewModel
+    public class ExpenseAndTypeViewModel
     {
         public Expense expense
         {

@@ -69,7 +69,7 @@ namespace AccrualWorld.Controllers
         public IActionResult Create()
         {
             //create an instance of the ExpenseCreateViewModel to get the list of ExpenseTypes in dropdown
-            ExpenseCreateViewModel ViewModel = new ExpenseCreateViewModel();
+            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
 
             //then use the view model rather than view data for more flexibility
             ViewModel.expenseTypes = _context.ExpenseTypes.Select(c => new SelectListItem
@@ -101,7 +101,7 @@ namespace AccrualWorld.Controllers
             ModelState.Remove("expense.User");
             ModelState.Remove("expense.UserId");
 
-            ExpenseCreateViewModel ViewModel = new ExpenseCreateViewModel();
+            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
 
             if (ModelState.IsValid)
             {
