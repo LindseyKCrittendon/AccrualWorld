@@ -103,7 +103,7 @@ namespace AccrualWorld.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", income.UserId);
+           
             return View(income);
         }
 
@@ -114,6 +114,8 @@ namespace AccrualWorld.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IncomeId,DateTime,ImagePath,Total,Description,Payer,UserId")] Income income)
         {
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
             if (id != income.IncomeId)
             {
                 return NotFound();
@@ -123,6 +125,8 @@ namespace AccrualWorld.Controllers
             {
                 try
                 {
+                    var user = await GetCurrentUserAsync();
+                    income.UserId = user.Id;
                     _context.Update(income);
                     await _context.SaveChangesAsync();
                 }
@@ -137,9 +141,12 @@ namespace AccrualWorld.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new
+                {
+                    id = income.IncomeId
+                });
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", income.UserId);
+           
             return View(income);
         }
 
