@@ -28,43 +28,44 @@
             <th>
                 @Html.DisplayNameFor(model => model.AmountPerMile)
             </th>
-            
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Paid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AmountPerMile)
-            </td>
-            
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MileageId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MileageId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MileageId">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Paid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AmountPerMile)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MileageId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MileageId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MileageId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <h4>Monthly Totals</h4>
 <table class="table table-striped table-bordered">
     <thead>
-        
+
         <tr>
             <th>
                 Total Miles
@@ -74,34 +75,69 @@
             </th>
 
             <th>
-               Total Paid
+                Total Paid
             </th>
             <th>
                 Total Unpaid
             </th>
             <th>
-               Total Deduction
+                Total Deduction
             </th>
         </tr>
-        <tbody>
-            <tr>
-                <td>
+    <tbody>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
 
-                </td>
-                <td>
-
-                </td>
-                <td>
-
-                </td>
-                <td>
-
-                </td>
-                <td>
-
-                </td>
-
-            </tr>
-        </tbody>
+        </tr>
+    </tbody>
     </thead>
-    </table>
+</table>
+
+<h4>Yearly Totals</h4>
+<table class="table table-striped table-bordered">
+    <thead>
+
+        <tr>
+            <th>
+                Total Miles
+            </th>
+            <th>
+                Total Paid Miles
+            </th>
+
+            <th>
+                Total Paid
+            </th>
+            <th>
+                Total Unpaid
+            </th>
+            <th>
+                Total Deduction
+            </th>
+        </tr>
+    <tbody>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+
+        </tr>
+    </tbody>
+    </thead>
+</table>
