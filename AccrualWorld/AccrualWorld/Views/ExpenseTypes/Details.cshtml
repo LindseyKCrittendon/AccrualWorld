@@ -4,15 +4,13 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-<h3>
-    @Model.Expenses.ToList()[0].DateTime.Month
-</h3>
+
+
 
 <a asp-controller="ExpenseTypes" asp-action="Index">Back</a>
 
 <div>
-    <h4>ExpenseType</h4>
+    <h4>Expenses</h4>
 
 
 </div>
@@ -25,7 +23,6 @@
         @Html.DisplayFor(model => model.Label)
     </dd>
 </dl>
-<h4>Expenses</h4>
 <ul>
     @foreach (Expense item in Model.Expenses)
     {
