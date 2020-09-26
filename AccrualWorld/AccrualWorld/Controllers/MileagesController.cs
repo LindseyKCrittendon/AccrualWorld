@@ -61,7 +61,7 @@ namespace AccrualWorld.Controllers
         // GET: Mileages/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            
             return View();
         }
 
@@ -72,13 +72,21 @@ namespace AccrualWorld.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MileageId,Total,DateTime,Description,Paid,AmountPerMile,UserId")] Mileage mileage)
         {
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
+
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                mileage.UserId = user.Id;
                 _context.Add(mileage);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new
+                {
+                    id = mileage.MileageId
+                });
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", mileage.UserId);
+            
             return View(mileage);
         }
 
