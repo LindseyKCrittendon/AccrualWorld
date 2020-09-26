@@ -93,7 +93,7 @@
                 @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
             </td>
             <td>
-
+                @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total)
             </td>
             <td>
                 @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
@@ -119,14 +119,17 @@
                 Total Miles
             </th>
             <th>
+                Total Unpaid Miles
+            </th>
+            <th>
                 Total Paid Miles
             </th>
 
             <th>
-                Total Paid
+                Total Amount Paid
             </th>
             <th>
-                Total Unpaid
+                Total Amount Unpaid
             </th>
             <th>
                 Total Deduction
@@ -135,14 +138,22 @@
     <tbody>
         <tr>
             <td>
+                @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
             </td>
             <td>
+                @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total)
             </td>
             <td>
+                @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
             </td>
             <td>
+                $@(Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)
             </td>
             <td>
+                $@(Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.57)
+            </td>
+            <td>
+
             </td>
 
         </tr>
