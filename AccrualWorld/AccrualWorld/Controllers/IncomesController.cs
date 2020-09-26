@@ -35,7 +35,7 @@ namespace AccrualWorld.Controllers
 
             var income = await _context.Incomes
                .Include(i => i.User)
-                .Where(expense => expense.UserId == loggedInUser.Id)
+                .Where(income => income.UserId == loggedInUser.Id)
                 .ToListAsync();
             return View(income);
         }

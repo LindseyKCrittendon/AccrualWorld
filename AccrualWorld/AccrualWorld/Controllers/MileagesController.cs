@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AccrualWorld.Data;
 using AccrualWorld.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AccrualWorld.Controllers
 {
@@ -14,16 +15,28 @@ namespace AccrualWorld.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public MileagesController(ApplicationDbContext context)
+        // Add private field to hold our user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public MileagesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        // Get the currently logged in user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Mileages
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Mileages.Include(m => m.User);
-            return View(await applicationDbContext.ToListAsync());
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            var mileage = await _context.Mileages
+                .Include(m => m.User)
+                .Where(mileage => mileage.UserId == loggedInUser.Id)
+                .ToListAsync();
+            return View(mileage);
         }
 
         // GET: Mileages/Details/5
