@@ -62,7 +62,7 @@ namespace AccrualWorld.Controllers
         // GET: Incomes/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+           
             return View();
         }
 
@@ -73,13 +73,20 @@ namespace AccrualWorld.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IncomeId,DateTime,ImagePath,Total,Description,Payer,UserId")] Income income)
         {
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                income.UserId = user.Id;
                 _context.Add(income);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new
+                {
+                    id = income.IncomeId
+                });
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", income.UserId);
+            
             return View(income);
         }
 
