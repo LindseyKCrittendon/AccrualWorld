@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AccrualWorld.Data;
 using AccrualWorld.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AccrualWorld.Controllers
 {
@@ -14,16 +15,29 @@ namespace AccrualWorld.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public IncomesController(ApplicationDbContext context)
+        // Add private field to hold our user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public IncomesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        // Get the currently logged in user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Incomes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Incomes.Include(i => i.User);
-            return View(await applicationDbContext.ToListAsync());
+            //Added user information to only show information for the correct user
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            var income = await _context.Incomes
+               .Include(i => i.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
+                .ToListAsync();
+            return View(income);
         }
 
         // GET: Incomes/Details/5
