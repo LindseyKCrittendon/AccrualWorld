@@ -175,6 +175,8 @@ namespace AccrualWorld.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var income = await _context.Incomes.FindAsync(id);
+            var user = await GetCurrentUserAsync();
+            income.UserId = user.Id;
             _context.Incomes.Remove(income);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
