@@ -79,7 +79,7 @@
                 $@Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
             </td>
             <td>
-
+                $@Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
             </td>
 
         </tr>
