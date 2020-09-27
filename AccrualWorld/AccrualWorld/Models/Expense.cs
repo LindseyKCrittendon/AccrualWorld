@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,11 +38,18 @@ namespace AccrualWorld.Models
             get; set;
         }
 
+        [Display(Name = "Image Name")]
         public string ImagePath
         {
             get; set;
         }
 
+        [NotMapped]
+        [Display(Name = "Upload File")]
+        public IFormFile ImageFile
+        {
+            get; set;
+        }
 
         [Required]
         public ApplicationUser User
