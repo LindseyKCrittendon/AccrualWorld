@@ -175,6 +175,8 @@ namespace AccrualWorld.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var mileage = await _context.Mileages.FindAsync(id);
+            var user = await GetCurrentUserAsync();
+            mileage.UserId = user.Id;
             _context.Mileages.Remove(mileage);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
