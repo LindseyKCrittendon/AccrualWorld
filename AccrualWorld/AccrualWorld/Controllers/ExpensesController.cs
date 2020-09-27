@@ -9,6 +9,8 @@ using AccrualWorld.Data;
 using AccrualWorld.Models;
 using Microsoft.AspNetCore.Identity;
 using AccrualWorld.Models.ExpenseViewModels;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace AccrualWorld.Controllers
 {
@@ -19,10 +21,14 @@ namespace AccrualWorld.Controllers
         // Add private field to hold our user manager
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ExpensesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        //Add private field for photos
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        public ExpensesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
             _userManager = userManager;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // Get the currently logged in user
@@ -95,11 +101,23 @@ namespace AccrualWorld.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ExpenseId,ExpenseTypeId,Total,DateTime,ImagePath,UserId")] Expense expense)
+        public async Task<IActionResult> Create([Bind("ExpenseId,ExpenseTypeId,Total,DateTime,ImageFile,UserId")] Expense expense)
         {
             //adding user information automatically rather than in the form
             ModelState.Remove("expense.User");
             ModelState.Remove("expense.UserId");
+
+            //saving image to wwwRoot/receipt
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(expense.ImageFile.FileName);
+            string extension = Path.GetExtension(expense.ImageFile.FileName);
+            expense.ImagePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+            string path = Path.Combine(wwwRootPath + "/receipt/", fileName);
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await expense.ImageFile.CopyToAsync(fileStream);
+            }
+
 
             ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
 
