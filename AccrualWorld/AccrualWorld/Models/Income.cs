@@ -15,6 +15,7 @@ namespace AccrualWorld.Models
         }
 
         [Required]
+        [Display(Name = "Date Received")]
         public DateTime DateTime
         {
             get; set;

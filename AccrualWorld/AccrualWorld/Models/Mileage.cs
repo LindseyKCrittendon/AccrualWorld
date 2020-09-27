@@ -21,6 +21,7 @@ namespace AccrualWorld.Models
         }
 
         [Required]
+        [Display(Name = "Date")]
         public DateTime DateTime
         {
             get; set;
@@ -39,6 +40,7 @@ namespace AccrualWorld.Models
         }
 
         [DisplayFormat(DataFormatString = "{0:C}")]
+        [Display(Name = "Amount per Mile")]
         public double AmountPerMile
         {
             get; set;
