@@ -63,6 +63,7 @@ namespace AccrualWorld.Models
             get; set;
         }
 
+        [Display(Name ="Deduction Category")]
         public ExpenseType ExpenseType
         {
             get; set;
