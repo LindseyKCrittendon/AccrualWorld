@@ -41,17 +41,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AmountPerMile)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd class>
+       
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="MileageId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-primary">Back to Mileage</a>
     </form>
 </div>
