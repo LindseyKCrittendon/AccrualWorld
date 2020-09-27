@@ -269,7 +269,10 @@ namespace AccrualWorld.Controllers
             //deletes the record in the database
             _context.Expenses.Remove(expense);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "ExpenseTypes", new
+            {
+                id = expense.ExpenseTypeId
+            });
         }
 
         private bool ExpenseExists(int id)
