@@ -24,17 +24,12 @@
             @Html.DisplayFor(model => model.DateTime)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagePath)
+            Receipt
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImagePath)
+            <img src="@("~/receipt/" + Model.ImagePath)" asp-append-version="true" width="250px" height="250px" />
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd class>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ExpenseType)
         </dt>
@@ -46,6 +41,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="ExpenseId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="ExpenseTypes" asp-action="Details" class="btn btn-primary">Back to Expenses</a>
     </form>
 </div>
