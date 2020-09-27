@@ -26,7 +26,7 @@
 <ul>
     @foreach (Expense item in Model.Expenses)
     {
-        <li><strong>Date Purchased:</strong> @item.DateTime    |   <strong>Total:</strong> $@item.Total</li>
+        <li><strong>Date Purchased:</strong> @item.DateTime    |   <strong>Total:</strong> $@item.Total  <strong>Uploaded Receipt</strong> <img src="@("~/receipt/" + item.ImagePath)" asp-append-version="true"/></li>
         <a asp-controller="Expenses" asp-action="Edit" asp-route-id="@item.ExpenseId">Edit</a>
     }
 </ul>
