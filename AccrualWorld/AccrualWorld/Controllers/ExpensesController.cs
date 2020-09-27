@@ -259,6 +259,14 @@ namespace AccrualWorld.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var expense = await _context.Expenses.FindAsync(id);
+            var user = await GetCurrentUserAsync();
+            expense.UserId = user.Id;
+            //deletes the image from the wwwroot folder
+            var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "receipt", expense.ImagePath);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+
+            //deletes the record in the database
             _context.Expenses.Remove(expense);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
