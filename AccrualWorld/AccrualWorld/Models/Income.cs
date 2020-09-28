@@ -31,6 +31,7 @@ namespace AccrualWorld.Models
 
         [NotMapped]
         [Display(Name = "Upload Invoice")]
+        [Required(ErrorMessage = "Please Upload a Paystub or Invoice")]
         public IFormFile ImageFile
         {
             get; set;
