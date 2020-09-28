@@ -36,10 +36,10 @@
             @Html.DisplayFor(model => model.Total)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagePath)
+            Invoice
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImagePath)
+            <img src="@("~/invoice/" + Model.ImagePath)" asp-append-version="true" width="450px" height="450px" /> @Html.DisplayFor(model => model.ImagePath)
         </dd>
 
 
