@@ -30,7 +30,7 @@ namespace AccrualWorld.Models
         }
 
         [NotMapped]
-        [Display(Name = "Upload Receipt")]
+        [Display(Name = "Upload Invoice")]
         public IFormFile ImageFile
         {
             get; set;
