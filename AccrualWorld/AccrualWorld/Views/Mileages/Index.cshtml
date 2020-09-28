@@ -105,13 +105,13 @@
                 @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
             </td>
             <td>
-                $@(Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)
+                $@Math.Round((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42), 2)
             </td>
             <td>
-                $@(Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58)
+                $@Math.Round((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58), 2)
             </td>
             <td>
-                $@((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42))
+                $@Math.Round(((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
             </td>
 
         </tr>
@@ -156,13 +156,13 @@
                 @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
             </td>
             <td>
-                $@(Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)
+                $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42), 2)
             </td>
             <td>
-                $@(Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58)
+                $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58), 2)
             </td>
             <td>
-                $@((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42))
+                $@Math.Round(((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
 
             </td>
 
