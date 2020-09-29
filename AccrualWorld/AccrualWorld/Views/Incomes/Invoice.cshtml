@@ -9,32 +9,52 @@
 <p>
     <a asp-controller="Expenses" asp-action="Receipt" class="btn btn-primary">Go Back to Receipts</a>
 </p>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTime)
-            </th>
-            <th>
-                Paystub or Invoice
-            </th>
-           
-           
-           
-           
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                <img src="@("~/invoice/" + item.ImagePath)" asp-append-version="true" width="450px" height="450px" />
-            </td>
-          
-        </tr>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <span>Start Date :</span> <input type="date" name="start" />
+
+
+
+        <span>End Date :</span> <input type="date" name="end" />
+
+
+
+        <input type="submit" value="Get Payments Between Dates" />
+
+
+
+    </div>
+    //date range picker with table printing below
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateTime)
+                </th>
+                <th>
+                    Paystub or Invoice
+                </th>
+
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        <img src="@("~/invoice/" + item.ImagePath)" asp-append-version="true" width="450px" height="450px" />
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>

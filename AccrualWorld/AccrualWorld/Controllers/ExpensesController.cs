@@ -288,19 +288,12 @@ namespace AccrualWorld.Controllers
             //Added user information to only show information for the correct user
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
-            //trying to get date range functionality
+            //get date range functionality
             var expense = await _context.Expenses
                 .Include(et => et.ExpenseType)
                 .Include(u => u.User)
                 .Where(expense => expense.UserId == loggedInUser.Id && (!start.HasValue || expense.DateTime >= start) && (!end.HasValue || expense.DateTime <= end))
                 .ToListAsync();
-
-
-           // var expense = await _context.Expenses
-           //     .Include(et => et.ExpenseType)
-           //    .Include(u => u.User)
-           //    .Where(expense => expense.UserId == loggedInUser.Id)
-           //   .ToListAsync();
             return View(expense);
 
             
