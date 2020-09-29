@@ -9,166 +9,186 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Add Mileage</a>
 </p>
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Paid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AmountPerMile)
-            </th>
-            <th>
-                Deduction 
-            </th>
+@using (Html.BeginForm())
+{
+    <div>
+        <span>Start Date :</span> <input type="date" name="start" />
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+
+
+        <span>End Date :</span> <input type="date" name="end" />
+
+
+
+        <input type="submit" value="Get Mileage Between Dates" />
+
+
+
+    </div>
+    //Date range picker with table
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Total)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Paid)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AmountPerMile)
+                </th>
+                <th>
+                    Deduction
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Paid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AmountPerMile)
+                    </td>
+                    <td>
+                        $0.58
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.MileageId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.MileageId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.MileageId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+    <h4>Monthly Totals</h4>
+    <table class="table table-striped table-bordered">
+        <thead>
+
+            <tr>
+                <th>
+                    Total Miles
+                </th>
+                <th>
+                    Total Unpaid Miles
+                </th>
+                <th>
+                    Total Paid Miles
+                </th>
+
+                <th>
+                    Total Amount Paid
+                </th>
+                <th>
+                    Total Amount Unpaid
+                </th>
+                <th>
+                    Total Deduction
+                </th>
+            </tr>
+        </thead>
+        <tbody>
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DateTime)
+                    @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Total)
+                    @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total)
+                </td>
+                <td>
+                    @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
+                </td>
+                <td>
+                    $@Math.Round((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42), 2)
+                </td>
+                <td>
+                    $@Math.Round((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58), 2)
+                </td>
+                <td>
+                    $@Math.Round(((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
                 </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Paid)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AmountPerMile)
-                </td>
-                <td>
-                    $0.58
-                </td>
-
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.MileageId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.MileageId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MileageId">Delete</a>
-                </td>
             </tr>
-        }
-    </tbody>
-</table>
-<h4>Monthly Totals</h4>
-<table class="table table-striped table-bordered">
-    <thead>
+        </tbody>
 
-        <tr>
-            <th>
-                Total Miles
-            </th>
-            <th>
-                Total Unpaid Miles
-            </th>
-            <th>
-                Total Paid Miles
-            </th>
+    </table>
 
-            <th>
-                Total Amount Paid
-            </th>
-            <th>
-                Total Amount Unpaid
-            </th>
-            <th>
-                Total Deduction
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
-            </td>
-            <td>
-                @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total)
-            </td>
-            <td>
-                @Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
-            </td>
-            <td>
-                $@Math.Round((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42), 2)
-            </td>
-            <td>
-                $@Math.Round((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58), 2)
-            </td>
-            <td>
-                $@Math.Round(((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
-            </td>
+    <h4>Yearly Totals</h4>
+    <table class="table table-striped table-bordered">
+        <thead>
 
-        </tr>
-    </tbody>
-    
-</table>
+            <tr>
+                <th>
+                    Total Miles
+                </th>
+                <th>
+                    Total Unpaid Miles
+                </th>
+                <th>
+                    Total Paid Miles
+                </th>
 
-<h4>Yearly Totals</h4>
-<table class="table table-striped table-bordered">
-    <thead>
+                <th>
+                    Total Amount Paid
+                </th>
+                <th>
+                    Total Amount Unpaid
+                </th>
+                <th>
+                    Total Deduction
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
+                </td>
+                <td>
+                    @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total)
+                </td>
+                <td>
+                    @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
+                </td>
+                <td>
+                    $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42), 2)
+                </td>
+                <td>
+                    $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58), 2)
+                </td>
+                <td>
+                    $@Math.Round(((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
 
-        <tr>
-            <th>
-                Total Miles
-            </th>
-            <th>
-                Total Unpaid Miles
-            </th>
-            <th>
-                Total Paid Miles
-            </th>
+                </td>
 
-            <th>
-                Total Amount Paid
-            </th>
-            <th>
-                Total Amount Unpaid
-            </th>
-            <th>
-                Total Deduction
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)
-            </td>
-            <td>
-                @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total)
-            </td>
-            <td>
-                @Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total)
-            </td>
-            <td>
-                $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42), 2)
-            </td>
-            <td>
-                $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58), 2)
-            </td>
-            <td>
-                $@Math.Round(((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
+            </tr>
+        </tbody>
 
-            </td>
-
-        </tr>
-    </tbody>
-    
-</table>
+    </table>
