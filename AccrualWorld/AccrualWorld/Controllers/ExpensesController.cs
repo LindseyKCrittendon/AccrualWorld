@@ -107,20 +107,22 @@ namespace AccrualWorld.Controllers
             ModelState.Remove("expense.User");
             ModelState.Remove("expense.UserId");
 
-            //saving image to wwwRoot/receipt
-            string wwwRootPath = _hostEnvironment.WebRootPath;
-            string fileName = Path.GetFileNameWithoutExtension(expense.ImageFile.FileName);
-            string extension = Path.GetExtension(expense.ImageFile.FileName);
-            expense.ImagePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            string path = Path.Combine(wwwRootPath + "/receipt/", fileName);
-            using (var fileStream = new FileStream(path, FileMode.Create))
-            {
-                await expense.ImageFile.CopyToAsync(fileStream);
-            }
-
-
             ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
 
+            //Forced user to upload a file by making ImageFile Required with an error message in model
+
+            //saving image to wwwRoot/receipt
+
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(expense.ImageFile.FileName);
+                    string extension = Path.GetExtension(expense.ImageFile.FileName);
+                    expense.ImagePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                    string path = Path.Combine(wwwRootPath + "/receipt/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await expense.ImageFile.CopyToAsync(fileStream);
+                    }
+                
             if (ModelState.IsValid)
             {
                 //add user to get the user information
@@ -278,6 +280,22 @@ namespace AccrualWorld.Controllers
         private bool ExpenseExists(int id)
         {
             return _context.Expenses.Any(e => e.ExpenseId == id);
+        }
+
+        // GET: Receipts
+        public async Task<IActionResult> Receipt()
+        {
+            //Added user information to only show information for the correct user
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            var expense = await _context.Expenses
+                
+                .Include(u => u.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
+                .ToListAsync();
+            return View(expense);
+
+            
         }
     }
 }

@@ -38,6 +38,7 @@ namespace AccrualWorld.Models
             get; set;
         }
 
+        
         [Display(Name = "Image Name")]
         public string ImagePath
         {
@@ -46,6 +47,7 @@ namespace AccrualWorld.Models
 
         [NotMapped]
         [Display(Name = "Upload Receipt")]
+        [Required(ErrorMessage ="Please Upload Receipt")]
         public IFormFile ImageFile
         {
             get; set;

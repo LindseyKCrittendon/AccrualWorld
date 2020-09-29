@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AccrualWorld.Data;
 using AccrualWorld.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace AccrualWorld.Controllers
 {
@@ -18,10 +20,14 @@ namespace AccrualWorld.Controllers
         // Add private field to hold our user manager
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public IncomesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        //Add private field for photos
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        public IncomesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
             _userManager = userManager;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // Get the currently logged in user
@@ -71,10 +77,23 @@ namespace AccrualWorld.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IncomeId,DateTime,ImagePath,Total,Description,Payer,UserId")] Income income)
+        public async Task<IActionResult> Create([Bind("IncomeId,DateTime,ImageFile,Total,Description,Payer,UserId")] Income income)
         {
             ModelState.Remove("UserId");
             ModelState.Remove("User");
+
+            //saving image to wwwRoot/receipt
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(income.ImageFile.FileName);
+            string extension = Path.GetExtension(income.ImageFile.FileName);
+            income.ImagePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+            string path = Path.Combine(wwwRootPath + "/invoice/", fileName);
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await income.ImageFile.CopyToAsync(fileStream);
+            }
+
+
             if (ModelState.IsValid)
             {
                 var user = await GetCurrentUserAsync();
@@ -112,10 +131,22 @@ namespace AccrualWorld.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IncomeId,DateTime,ImagePath,Total,Description,Payer,UserId")] Income income)
+        public async Task<IActionResult> Edit(int id, [Bind("IncomeId,DateTime,ImageFile,Total,Description,Payer,UserId")] Income income)
         {
             ModelState.Remove("User");
             ModelState.Remove("UserId");
+
+            //saving image to wwwRoot/receipt
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(income.ImageFile.FileName);
+            string extension = Path.GetExtension(income.ImageFile.FileName);
+            income.ImagePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+            string path = Path.Combine(wwwRootPath + "/invoice/", fileName);
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await income.ImageFile.CopyToAsync(fileStream);
+            }
+
             if (id != income.IncomeId)
             {
                 return NotFound();
@@ -176,6 +207,12 @@ namespace AccrualWorld.Controllers
         {
             var income = await _context.Incomes.FindAsync(id);
             var user = await GetCurrentUserAsync();
+
+            //deletes the image from the wwwroot folder
+            var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "invoice", income.ImagePath);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+
             income.UserId = user.Id;
             _context.Incomes.Remove(income);
             await _context.SaveChangesAsync();
