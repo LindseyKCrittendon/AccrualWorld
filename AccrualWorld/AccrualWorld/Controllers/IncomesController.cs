@@ -34,14 +34,14 @@ namespace AccrualWorld.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Incomes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? start, DateTime? end)
         {
             //Added user information to only show information for the correct user
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
             var income = await _context.Incomes
                .Include(i => i.User)
-                .Where(income => income.UserId == loggedInUser.Id)
+                .Where(income => income.UserId == loggedInUser.Id && (!start.HasValue || income.DateTime >= start) && (!end.HasValue || income.DateTime <= end))
                 .ToListAsync();
             return View(income);
         }

@@ -31,7 +31,7 @@ namespace AccrualWorld.Controllers
         public async Task<IActionResult> Index(DateTime? start, DateTime? end)
         {
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
-
+            //TODO:: DATE RANGE PICKER BROKE CALCULATIONS.  GET CORRECT CALCULATIONS FOR CURRENT MONTH AND YEAR REGARDLESS
             var mileage = await _context.Mileages
                 .Include(m => m.User)
                 //adds conditional information for date range picker.
