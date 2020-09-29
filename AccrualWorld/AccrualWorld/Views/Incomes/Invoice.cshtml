@@ -1,0 +1,40 @@
+﻿@model IEnumerable<AccrualWorld.Models.Income>
+
+@{
+    ViewData["Title"] = "Invoice";
+}
+
+<h1>Invoice</h1>
+
+<p>
+    <a asp-controller="Expenses" asp-action="Receipt">Go Back to Receipts</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                Paystub or Invoice
+            </th>
+           
+           
+           
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                <img src="@("~/invoice/" + item.ImagePath)" asp-append-version="true" width="450px" height="450px" />
+            </td>
+          
+        </tr>
+}
+    </tbody>
+</table>

@@ -223,5 +223,18 @@ namespace AccrualWorld.Controllers
         {
             return _context.Incomes.Any(e => e.IncomeId == id);
         }
+
+        //display paystubs only
+        public async Task<IActionResult> Invoice()
+        {
+            //Added user information to only show information for the correct user
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            var income = await _context.Incomes
+               .Include(i => i.User)
+                .Where(income => income.UserId == loggedInUser.Id)
+                .ToListAsync();
+            return View(income);
+        }
     }
 }

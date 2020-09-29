@@ -289,7 +289,7 @@ namespace AccrualWorld.Controllers
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
             var expense = await _context.Expenses
-                
+                .Include(et => et.ExpenseType)
                 .Include(u => u.User)
                 .Where(expense => expense.UserId == loggedInUser.Id)
                 .ToListAsync();
