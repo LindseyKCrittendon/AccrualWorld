@@ -205,3 +205,4 @@ C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\ExpenseTypes\Details.cshtml.g.cs
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\ExpenseTypes\Edit.cshtml.g.cs
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\ExpenseTypes\Index.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Controllers\Index.cshtml.g.cs

@@ -281,5 +281,21 @@ namespace AccrualWorld.Controllers
         {
             return _context.Expenses.Any(e => e.ExpenseId == id);
         }
+
+        // GET: Receipts
+        public async Task<IActionResult> Receipt()
+        {
+            //Added user information to only show information for the correct user
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            var expense = await _context.Expenses
+                
+                .Include(u => u.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
+                .ToListAsync();
+            return View(expense);
+
+            
+        }
     }
 }
