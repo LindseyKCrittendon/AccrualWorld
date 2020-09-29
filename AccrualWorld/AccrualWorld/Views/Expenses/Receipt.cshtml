@@ -1,0 +1,74 @@
+﻿@model IEnumerable<AccrualWorld.Models.Expense>
+
+@{
+    ViewData["Title"] = "Receipt";
+}
+
+
+
+<h1>Receipts</h1>
+
+<p>
+    <a asp-controller="Incomes" asp-action="Invoice" class="btn btn-primary">View Paystubs and Invoices</a>
+</p>
+
+
+ @using (Html.BeginForm())
+{
+    <div>
+        <span>Start Date :</span> <input type="date" name="start" />
+
+
+
+        <span>End Date :</span> <input type="date" name="end" />
+
+
+
+        <input type="submit" value="Get Receipts Between Dates" />
+
+
+
+    </div>
+//Date range picker with table
+<table class="table table-striped">
+<thead>
+<tr>
+
+<th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+<th>
+                @Html.DisplayNameFor(model => model.ExpenseType)
+            </th>
+<th>
+                Receipt
+            </th>
+
+            
+
+        </tr>
+    </thead>
+<tbody>
+@foreach (var item in Model)
+{
+<tr>
+
+<td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+<td>
+                @Html.DisplayFor(modelItem => item.ExpenseType.Label)
+            </td>
+<td>
+<img src="@("~/receipt/" + item.ImagePath)" asp-append-version="true" width="250px" height="250px" />
+
+            </td>
+
+
+          
+        </tr>
+}
+    </tbody>
+</table>
+
+}

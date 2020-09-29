@@ -283,15 +283,16 @@ namespace AccrualWorld.Controllers
         }
 
         // GET: Receipts
-        public async Task<IActionResult> Receipt()
+        public async Task<IActionResult> Receipt(DateTime? start, DateTime? end)
         {
             //Added user information to only show information for the correct user
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
+            //get date range functionality
             var expense = await _context.Expenses
-                
+                .Include(et => et.ExpenseType)
                 .Include(u => u.User)
-                .Where(expense => expense.UserId == loggedInUser.Id)
+                .Where(expense => expense.UserId == loggedInUser.Id && (!start.HasValue || expense.DateTime >= start) && (!end.HasValue || expense.DateTime <= end))
                 .ToListAsync();
             return View(expense);
 
