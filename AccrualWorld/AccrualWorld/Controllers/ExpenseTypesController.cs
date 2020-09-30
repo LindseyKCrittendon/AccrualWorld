@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AccrualWorld.Data;
 using AccrualWorld.Models;
 using Microsoft.AspNetCore.Identity;
+using AccrualWorld.Models.ExpenseViewModels;
 
 namespace AccrualWorld.Controllers
 {
@@ -15,22 +16,26 @@ namespace AccrualWorld.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        
+        // Add private field to hold our user manager
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ExpenseTypesController(ApplicationDbContext context)
+        public ExpenseTypesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            
+            _userManager = userManager;
         }
 
-        
+        // Get the currently logged in user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: ExpenseTypes
         public async Task<IActionResult> Index()
         {
             
+
             var ExpenseType = await _context.ExpenseTypes
                 .Include(e => e.Expenses)
+                
                 .ToListAsync();
 
             return View(ExpenseType);
@@ -38,25 +43,31 @@ namespace AccrualWorld.Controllers
         }
 
         // GET: ExpenseTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, DateTime? start, DateTime? end)
         {
-            //TODO::  FIGURE OUT IF IT WOULD BE MORE USER FRIENDLY TO HAVE A DROP 
-            //DOWN BY HEAR IN THE DETAILS VIEW OR A SEARCH BAR TO SEARCH BY YEAR
-            //TODO:: SPLIT UP PRODUCTS BY MONTH AND YEAR AND ADD A TOTAL FOR MONTH AND YEAR
+
+            ExpenseTypeAndCustomExpenses vm = new ExpenseTypeAndCustomExpenses();
+            
+            //TODO:: SPLIT UP PRODUCTS BY MONTH AND YEAR AND ADD A TOTAL FOR MONTH AND YEAR from dates listed
             if (id == null)
             {
                 return NotFound();
             }
-
-            var expenseType = await _context.ExpenseTypes
+            //TODO:: FIGURE OUT THIS ISSUE TO GET THE CORRECT EXPENSE BY DATE
+           vm.expenseType = await _context.ExpenseTypes
                 .Include(e => e.Expenses)
+                //.Include(u => User)
+                
+                //.ToListAsync();
                 .FirstOrDefaultAsync(m => m.ExpenseTypeId == id);
-            if (expenseType == null)
+
+             vm.expenses = vm.expenseType.Expenses.Where(t => (!start.HasValue || t.DateTime >= start) && (!end.HasValue || t.DateTime <= end)).ToList();
+            if (vm.expenseType == null)
             {
                 return NotFound();
             }
 
-            return View(expenseType);
+            return View(vm);
         }
 
         // GET: ExpenseTypes/Create
