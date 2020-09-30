@@ -48,19 +48,19 @@ namespace AccrualWorld.Controllers
 
             ExpenseTypeAndCustomExpenses vm = new ExpenseTypeAndCustomExpenses();
             
-            //TODO:: SPLIT UP PRODUCTS BY MONTH AND YEAR AND ADD A TOTAL FOR MONTH AND YEAR from dates listed
+            
             if (id == null)
             {
                 return NotFound();
             }
-            //TODO:: FIGURE OUT THIS ISSUE TO GET THE CORRECT EXPENSE BY DATE
+            //created a view model to manipulate the expense list within ExpenseTypes freely for date picker and calculations
            vm.expenseType = await _context.ExpenseTypes
                 .Include(e => e.Expenses)
                 //.Include(u => User)
                 
                 //.ToListAsync();
                 .FirstOrDefaultAsync(m => m.ExpenseTypeId == id);
-
+            //targeting expenses in the view model for the date picker
              vm.expenses = vm.expenseType.Expenses.Where(t => (!start.HasValue || t.DateTime >= start) && (!end.HasValue || t.DateTime <= end)).ToList();
             if (vm.expenseType == null)
             {
