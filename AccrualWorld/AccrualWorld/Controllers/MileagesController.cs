@@ -28,13 +28,14 @@ namespace AccrualWorld.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Mileages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? start, DateTime? end)
         {
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
-
+            //TODO:: DATE RANGE PICKER BROKE CALCULATIONS.  GET CORRECT CALCULATIONS FOR CURRENT MONTH AND YEAR REGARDLESS
             var mileage = await _context.Mileages
                 .Include(m => m.User)
-                .Where(mileage => mileage.UserId == loggedInUser.Id)
+                //adds conditional information for date range picker.
+                .Where(mileage => mileage.UserId == loggedInUser.Id && (!start.HasValue || mileage.DateTime >= start) && (!end.HasValue || mileage.DateTime <= end))
                 .ToListAsync();
             return View(mileage);
         }
