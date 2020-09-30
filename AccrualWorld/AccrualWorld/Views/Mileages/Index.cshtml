@@ -107,10 +107,10 @@
                 </th>
 
                 <th>
-                    Total Amount Paid
+                    $ Amount Paid
                 </th>
                 <th>
-                    Total Amount Unpaid
+                    $ Amount Unpaid
                 </th>
                 <th>
                     Total Deduction
@@ -129,13 +129,13 @@
                     @Model.Where(i => i.Paid == true).Sum(i => i.Total)
                 </td>
                 <td>
-                    $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42), 2)
+                    $@Math.Round((Model.Where(i => i.Paid == true).Sum(i => i.Total) * 0.42), 2)
                 </td>
                 <td>
-                    $@Math.Round((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58), 2)
+                    $@Math.Round((Model.Where(i => i.Paid == false).Sum(i => i.Total) * 0.58), 2)
                 </td>
                 <td>
-                    $@Math.Round(((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.DateTime.Year.ToString() == DateTime.Now.Year.ToString() && i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
+                    $@Math.Round(((Model.Where(i => i.Paid == false).Sum(i => i.Total) * 0.58) + ((Model.Where(i => i.Paid == true).Sum(i => i.Total) * 0.58)) - (Model.Where(i => i.Paid == true).Sum(i => i.Total) * 0.42)), 2)
 
                 </td>
 
