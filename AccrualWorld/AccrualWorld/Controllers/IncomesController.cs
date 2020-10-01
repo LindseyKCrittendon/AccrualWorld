@@ -10,9 +10,11 @@ using AccrualWorld.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccrualWorld.Controllers
 {
+    [Authorize]
     public class IncomesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -49,6 +51,8 @@ namespace AccrualWorld.Controllers
         // GET: Incomes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
             if (id == null)
             {
                 return NotFound();
@@ -56,6 +60,7 @@ namespace AccrualWorld.Controllers
 
             var income = await _context.Incomes
                 .Include(i => i.User)
+                .Where(income => income.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.IncomeId == id);
             if (income == null)
             {
@@ -112,12 +117,18 @@ namespace AccrualWorld.Controllers
         // GET: Incomes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var income = await _context.Incomes.FindAsync(id);
+            var income = await _context.Incomes
+                .Include(i => i.User)
+                .Where(income => income.UserId == loggedInUser.Id)
+               // .FindAsync(id);
+               .FirstOrDefaultAsync(m => m.IncomeId == id);
             if (income == null)
             {
                 return NotFound();
@@ -184,6 +195,7 @@ namespace AccrualWorld.Controllers
         // GET: Incomes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -191,6 +203,7 @@ namespace AccrualWorld.Controllers
 
             var income = await _context.Incomes
                 .Include(i => i.User)
+                .Where(income => income.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.IncomeId == id);
             if (income == null)
             {
