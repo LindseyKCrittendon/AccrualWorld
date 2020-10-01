@@ -31,11 +31,12 @@ namespace AccrualWorld.Controllers
         // GET: ExpenseTypes
         public async Task<IActionResult> Index()
         {
-            
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
             var ExpenseType = await _context.ExpenseTypes
                 .Include(e => e.Expenses)
-                
+                .ThenInclude(u => u.User)
+                //.Where(ExpenseType => ExpenseType.Expenses.UserId == loggedInUser.Id)
                 .ToListAsync();
 
             return View(ExpenseType);

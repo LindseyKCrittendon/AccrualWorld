@@ -8,9 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using AccrualWorld.Data;
 using AccrualWorld.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccrualWorld.Controllers
-{
+{[Authorize]
     public class MileagesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -43,6 +44,7 @@ namespace AccrualWorld.Controllers
         // GET: Mileages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -50,6 +52,7 @@ namespace AccrualWorld.Controllers
 
             var mileage = await _context.Mileages
                 .Include(m => m.User)
+                .Where(mileage => mileage.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.MileageId == id);
             if (mileage == null)
             {
@@ -94,12 +97,17 @@ namespace AccrualWorld.Controllers
         // GET: Mileages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var mileage = await _context.Mileages.FindAsync(id);
+            var mileage = await _context.Mileages
+                 .Include(m => m.User)
+                .Where(mileage => mileage.UserId == loggedInUser.Id)
+                .FirstOrDefaultAsync(m => m.MileageId == id);
+            ;
             if (mileage == null)
             {
                 return NotFound();
@@ -154,6 +162,7 @@ namespace AccrualWorld.Controllers
         // GET: Mileages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -161,6 +170,7 @@ namespace AccrualWorld.Controllers
 
             var mileage = await _context.Mileages
                 .Include(m => m.User)
+                .Where(mileage => mileage.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.MileageId == id);
             if (mileage == null)
             {
