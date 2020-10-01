@@ -36,8 +36,14 @@ namespace AccrualWorld.Controllers
             var ExpenseType = await _context.ExpenseTypes
                 .Include(e => e.Expenses)
                 .ThenInclude(u => u.User)
-                //.Where(ExpenseType => ExpenseType.Expenses.UserId == loggedInUser.Id)
+                
                 .ToListAsync();
+            
+            foreach (var item in ExpenseType)
+            {
+                item.Expenses = item.Expenses.Where(e => e.UserId == loggedInUser.Id).ToList();
+
+            }
 
             return View(ExpenseType);
             //return View(await _context.ExpenseTypes.ToListAsync());

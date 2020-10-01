@@ -214,6 +214,13 @@ namespace AccrualWorld.Controllers
                 try
                 {
                     var user = await GetCurrentUserAsync();
+
+                    var expensepre = await _context.Expenses
+                .Include(e => e.ExpenseType)
+                .Include(i => i.User)
+                .Where(income => income.UserId == user.Id)
+                .FirstOrDefaultAsync(m => m.ExpenseId == id);
+
                     expense.UserId = user.Id;
                     _context.Update(expense);
                     await _context.SaveChangesAsync();
