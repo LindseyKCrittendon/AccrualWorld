@@ -52,7 +52,7 @@ namespace AccrualWorld.Controllers
         // GET: ExpenseTypes/Details/5
         public async Task<IActionResult> Details(int? id, DateTime? start, DateTime? end)
         {
-
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             ExpenseTypeAndCustomExpenses vm = new ExpenseTypeAndCustomExpenses();
             
             
@@ -63,12 +63,13 @@ namespace AccrualWorld.Controllers
             //created a view model to manipulate the expense list within ExpenseTypes freely for date picker and calculations
            vm.expenseType = await _context.ExpenseTypes
                 .Include(e => e.Expenses)
-                //.Include(u => User)
+                .ThenInclude(u => User)
                 
                 //.ToListAsync();
                 .FirstOrDefaultAsync(m => m.ExpenseTypeId == id);
+           
             //targeting expenses in the view model for the date picker
-             vm.expenses = vm.expenseType.Expenses.Where(t => (!start.HasValue || t.DateTime >= start) && (!end.HasValue || t.DateTime <= end)).ToList();
+            vm.expenses = vm.expenseType.Expenses.Where(t => t.UserId == loggedInUser.Id && (!start.HasValue || t.DateTime >= start) && (!end.HasValue || t.DateTime <= end)).ToList();
             if (vm.expenseType == null)
             {
                 return NotFound();

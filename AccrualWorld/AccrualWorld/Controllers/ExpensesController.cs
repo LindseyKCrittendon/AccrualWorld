@@ -64,7 +64,7 @@ namespace AccrualWorld.Controllers
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
                 .Include(i => i.User)
-                .Where(income => income.UserId == loggedInUser.Id)
+                .Where(expense => expense.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {
@@ -218,9 +218,9 @@ namespace AccrualWorld.Controllers
                     var expensepre = await _context.Expenses
                 .Include(e => e.ExpenseType)
                 .Include(i => i.User)
-                .Where(income => income.UserId == user.Id)
+                .Where(expense => expense.UserId == user.Id)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
-
+                    //conditional to bring back the original picture or let them change it.
                     expense.UserId = user.Id;
                     _context.Update(expense);
                     await _context.SaveChangesAsync();
