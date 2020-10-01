@@ -11,9 +11,10 @@ using Microsoft.AspNetCore.Identity;
 using AccrualWorld.Models.ExpenseViewModels;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccrualWorld.Controllers
-{
+{[Authorize]
     public class ExpensesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -54,6 +55,7 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -61,7 +63,8 @@ namespace AccrualWorld.Controllers
 
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
-                //.Include(e => e.User)
+                .Include(i => i.User)
+                .Where(income => income.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {
@@ -150,13 +153,19 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
             if (id == null)
             {
                 return NotFound();
             }
 
-            ViewModel.expense = await _context.Expenses.FindAsync(id);
+            ViewModel.expense = await _context.Expenses
+                 .Include(i => i.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
+               // .FindAsync(id);
+               .FirstOrDefaultAsync(m => m.ExpenseId == id);
+            ;
             if (ViewModel.expense == null)
             {
                 return NotFound();
@@ -238,6 +247,7 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -246,6 +256,7 @@ namespace AccrualWorld.Controllers
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
                 .Include(e => e.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {

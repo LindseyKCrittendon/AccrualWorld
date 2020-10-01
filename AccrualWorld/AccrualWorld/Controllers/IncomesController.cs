@@ -118,7 +118,7 @@ namespace AccrualWorld.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
-
+            //TODO:: MAKE SURE USER SEES PICTURE THEY ALREADY UPLOADED AND CAN CHANGE PICTURE IF WANTED
             if (id == null)
             {
                 return NotFound();
