@@ -1,4 +1,4 @@
-﻿@model AccrualWorld.Models.ExpenseViewModels.ExpenseAndTypeViewModel
+﻿@model AccrualWorld.Models.ExpenseViewModels.ExpenseTypeAndExpenseEditWithImage
 
 @{
     ViewData["Title"] = "Edit";
@@ -28,12 +28,12 @@
                 <input asp-for="expense.DateTime" class="form-control" />
                 <span asp-validation-for="expense.DateTime" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
-                <label asp-for="expense.ImageFile" class="control-label"></label>
-                <input asp-for="expense.ImageFile" accept="image/*" />
-                <span asp-validation-for="expense.ImageFile" class="text-danger"></span>
+                <label asp-for="ImageFile" class="control-label"></label>                
+                <input asp-for="ImageFile" accept="image/*"/>               
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

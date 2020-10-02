@@ -12,6 +12,7 @@ using AccrualWorld.Models.ExpenseViewModels;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace AccrualWorld.Controllers
 {[Authorize]
@@ -154,18 +155,26 @@ namespace AccrualWorld.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
-            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
+            ExpenseTypeAndExpenseEditWithImage ViewModel = new ExpenseTypeAndExpenseEditWithImage();
             if (id == null)
             {
                 return NotFound();
             }
-
+            //trying to force edit form to show picture already uploaded
+            //var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "receipt", ViewModel.expense.ImagePath);
+            // if (System.IO.File.Exists(imagePath))
+            //figure out how to turn imagefile back into filepath
+            //original code below
             ViewModel.expense = await _context.Expenses
-                 .Include(i => i.User)
+                
+                 .Include(i => i.User)                
                 .Where(expense => expense.UserId == loggedInUser.Id)
                // .FindAsync(id);
                .FirstOrDefaultAsync(m => m.ExpenseId == id);
-            ;
+
+           
+
+            
             if (ViewModel.expense == null)
             {
                 return NotFound();
@@ -176,6 +185,7 @@ namespace AccrualWorld.Controllers
                 Value = c.ExpenseTypeId.ToString()
             }
             ).ToList();
+           // ViewModel.expense.ImageFile = imageFile;
             //ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
             //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
             return View(ViewModel);
@@ -190,20 +200,10 @@ namespace AccrualWorld.Controllers
         {
             ModelState.Remove("expense.User");
             ModelState.Remove("expense.UserId");
-
+            ExpenseTypeAndExpenseEditWithImage ViewModel = new ExpenseTypeAndExpenseEditWithImage();
             //saving image to wwwRoot/receipt
-            string wwwRootPath = _hostEnvironment.WebRootPath;
-            string fileName = Path.GetFileNameWithoutExtension(expense.ImageFile.FileName);
-            string extension = Path.GetExtension(expense.ImageFile.FileName);
-            expense.ImagePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            string path = Path.Combine(wwwRootPath + "/receipt/", fileName);
-            using (var fileStream = new FileStream(path, FileMode.Create))
-            {
-                await expense.ImageFile.CopyToAsync(fileStream);
-            }
+          
 
-
-            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
             if (id != expense.ExpenseId)
             {
                 return NotFound();
@@ -211,16 +211,24 @@ namespace AccrualWorld.Controllers
 
             if (ModelState.IsValid)
             {
+                //string oldFilePath = ViewModel.expense.ImagePath;
                 try
                 {
                     var user = await GetCurrentUserAsync();
+                    if (ViewModel.ImageFile != null)
+                    {
 
-                    var expensepre = await _context.Expenses
-                .Include(e => e.ExpenseType)
-                .Include(i => i.User)
-                .Where(expense => expense.UserId == user.Id)
-                .FirstOrDefaultAsync(m => m.ExpenseId == id);
-                    //conditional to bring back the original picture or let them change it.
+                        string wwwRootPath = _hostEnvironment.WebRootPath;
+                        string fileName = Path.GetFileNameWithoutExtension(ViewModel.ImageFile.FileName);
+                        string extension = Path.GetExtension(ViewModel.ImageFile.FileName);
+                        expense.ImagePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        string path = Path.Combine(wwwRootPath + "/receipt/", fileName);
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await expense.ImageFile.CopyToAsync(fileStream);
+                        }
+
+                    }
                     expense.UserId = user.Id;
                     _context.Update(expense);
                     await _context.SaveChangesAsync();
