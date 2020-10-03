@@ -28,12 +28,12 @@
                 <input asp-for="expense.DateTime" class="form-control" />
                 <span asp-validation-for="expense.DateTime" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
-                <label asp-for="expense.ImageFile" class="control-label"></label>
-                <input asp-for="expense.ImageFile" accept="image/*" />
+                <label asp-for="expense.ImageFile" class="control-label"></label>                
+                <input asp-for="expense.ImageFile" accept="image/*"/>               
                 <span asp-validation-for="expense.ImageFile" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

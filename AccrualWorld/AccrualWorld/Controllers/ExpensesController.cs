@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using AccrualWorld.Models.ExpenseViewModels;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace AccrualWorld.Controllers
-{
+{[Authorize]
     public class ExpensesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -54,6 +56,7 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -61,7 +64,8 @@ namespace AccrualWorld.Controllers
 
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
-                //.Include(e => e.User)
+                .Include(i => i.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {
@@ -150,13 +154,27 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
             if (id == null)
             {
                 return NotFound();
             }
+            //trying to force edit form to show picture already uploaded
+            //var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "receipt", ViewModel.expense.ImagePath);
+            // if (System.IO.File.Exists(imagePath))
+            //figure out how to turn imagefile back into filepath
+            //original code below
+            ViewModel.expense = await _context.Expenses
+                
+                 .Include(i => i.User)                
+                .Where(expense => expense.UserId == loggedInUser.Id)
+               // .FindAsync(id);
+               .FirstOrDefaultAsync(m => m.ExpenseId == id);
 
-            ViewModel.expense = await _context.Expenses.FindAsync(id);
+           
+
+            
             if (ViewModel.expense == null)
             {
                 return NotFound();
@@ -167,6 +185,7 @@ namespace AccrualWorld.Controllers
                 Value = c.ExpenseTypeId.ToString()
             }
             ).ToList();
+           // ViewModel.expense.ImageFile = imageFile;
             //ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Label", expense.ExpenseTypeId);
             //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", expense.UserId);
             return View(ViewModel);
@@ -181,8 +200,15 @@ namespace AccrualWorld.Controllers
         {
             ModelState.Remove("expense.User");
             ModelState.Remove("expense.UserId");
-
+            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
             //saving image to wwwRoot/receipt
+            
+
+            if (id != expense.ExpenseId)
+            {
+                return NotFound();
+            }
+
             string wwwRootPath = _hostEnvironment.WebRootPath;
             string fileName = Path.GetFileNameWithoutExtension(expense.ImageFile.FileName);
             string extension = Path.GetExtension(expense.ImageFile.FileName);
@@ -194,14 +220,9 @@ namespace AccrualWorld.Controllers
             }
 
 
-            ExpenseAndTypeViewModel ViewModel = new ExpenseAndTypeViewModel();
-            if (id != expense.ExpenseId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
+                //string oldFilePath = ViewModel.expense.ImagePath;
                 try
                 {
                     var user = await GetCurrentUserAsync();
@@ -238,6 +259,7 @@ namespace AccrualWorld.Controllers
         // GET: Expenses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -246,6 +268,7 @@ namespace AccrualWorld.Controllers
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
                 .Include(e => e.User)
+                .Where(expense => expense.UserId == loggedInUser.Id)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {

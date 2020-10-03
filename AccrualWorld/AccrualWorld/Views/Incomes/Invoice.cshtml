@@ -6,9 +6,18 @@
 
 <h1>Paystubs and Paid Invoices</h1>
 
-<p>
-    <a asp-controller="Expenses" asp-action="Receipt" class="btn btn-primary">Go Back to Receipts</a>
-</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                <a asp-controller="Incomes" asp-action="Invoice" class="btn btn-primary">View Paystubs and Invoices</a>
+            </th>
+            <th>
+                <a href="javascript:window.print()" class="btn btn-primary">Click to Print This Page</a>
+            </th>
+        </tr>
+    </thead>
+</table>
 
 @using (Html.BeginForm())
 {
@@ -50,7 +59,7 @@
                         @Html.DisplayFor(modelItem => item.DateTime)
                     </td>
                     <td>
-                        <img src="@("~/invoice/" + item.ImagePath)" asp-append-version="true" width="450px" height="450px" />
+                        <img src="@("~/invoice/" + item.ImagePath)" asp-append-version="true" width="650px" height="450px" />
                     </td>
 
                 </tr>

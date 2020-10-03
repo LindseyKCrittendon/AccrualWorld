@@ -207,3 +207,7 @@ C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\ExpenseTypes\Index.cshtml.g.cs
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\Expenses\Receipt.cshtml.g.cs
 C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Views\Incomes\Invoice.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Newforce.NEWFORCE-015\workspace\AccrualWorld\AccrualWorld\AccrualWorld\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
