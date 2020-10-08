@@ -37,6 +37,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ExpenseId">Edit</a> |
-    <a asp-controller="ExpenseTypes" asp-action="Index">View Expenses</a>
+    <a asp-action="Delete" asp-route-id="@Model.ExpenseId" class="btn btn-danger">Delete Expense</a> |
+    <a asp-controller="ExpenseTypes" asp-action="Index" class="btn btn-primary">View Expenses</a>
 </div>
