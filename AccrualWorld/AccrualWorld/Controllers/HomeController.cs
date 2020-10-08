@@ -50,8 +50,9 @@ namespace AccrualWorld.Controllers
                 var number = 0.0;
                 for (int i = 0; i < incomes.Count; i++)
                 {
-                    number += incomes.Where(t => t.DateTime.Month == (p + 1) && t.UserId == loggedInUser.Id).Sum(t => t.Total);
+                    number = incomes.Where(t => t.DateTime.Month == (p + 1) && t.UserId == loggedInUser.Id).Sum(t => t.Total);
                 }
+                //var betternumber = number / (incomes.Where(t => t.DateTime.Month == (p + 1) && t.UserId == loggedInUser.Id).Count());
                 totals.Add(number);
             }
 
@@ -67,7 +68,7 @@ namespace AccrualWorld.Controllers
                 var eNumber = 0.0;
                 for (int x = 0; x < expenses.Count; x++)
                 {
-                    eNumber += expenses.Where(et => et.DateTime.Month == (m + 1) && et.UserId == loggedInUser.Id).Sum(et => et.Total);
+                    eNumber = expenses.Where(et => et.DateTime.Month == (m + 1) && et.UserId == loggedInUser.Id).Sum(et => et.Total);
                 }
                 eTotals.Add(eNumber);
             }
