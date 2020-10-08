@@ -71,7 +71,7 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.IncomeId">Edit</a> |
+                        
                         <a asp-action="Details" asp-route-id="@item.IncomeId">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.IncomeId">Delete</a>
                     </td>
@@ -93,7 +93,7 @@
         <tbody>
             <tr>
                 <td>                    
-                    $@Model.Sum(i => i.Total)
+                    $@Math.Round(Model.Sum(i => i.Total), 2)
                 </td>
                 
 
