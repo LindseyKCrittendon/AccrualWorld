@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\invoice\" />
+    <Folder Include="wwwroot\lib\charts\" />
     <Folder Include="wwwroot\receipt\" />
   </ItemGroup>
 

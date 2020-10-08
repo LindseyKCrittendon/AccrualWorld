@@ -1,0 +1,122 @@
+﻿@model AccrualWorld.Models.DashboardViewModels.DashboardViewModel;
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<script src="~/lib/charts/accessibility.js"></script>
+<script src="~/lib/charts/export-data.js"></script>
+<script src="~/lib/charts/exporting.js"></script>
+<script src="~/lib/charts/highcharts.js"></script>
+<script src="~/lib/charts/highcharts-3d.js"></script>
+
+<figure class="highcharts-figure">
+    <div id="containerLine"></div>
+    <p class="highcharts-description">
+        This chart shows how data labels can be added to the data series. This
+        can increase readability and comprehension for small datasets.
+    </p>
+</figure>
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+        Chart demonstrating the use of a 3D pie layout.
+        The "Chrome" slice has been selected, and is offset from the pie.
+        Click on slices to select and unselect them.
+        Note that 3D pies, while decorative, can be hard to read, and the
+        viewing angles can make slices close to the user appear larger than they
+        are.
+    </p>
+</figure>
+
+<script>
+    //Line Graph for income and expenses
+    Highcharts.chart('containerLine', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Monthly Average Temperature'
+        },
+        subtitle: {
+            text: 'Source: WorldClimate.com'
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature (°C)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+            name: 'Payments Received',
+            data: [@Model.monthlyTotals[0], @Model.monthlyTotals[1], @Model.monthlyTotals[2], @Model.monthlyTotals[3], @Model.monthlyTotals[4], @Model.monthlyTotals[5], @Model.monthlyTotals[6], @Model.monthlyTotals[7], @Model.monthlyTotals[8], @Model.monthlyTotals[9], @Model.monthlyTotals[10], @Model.monthlyTotals[11]]
+        }]
+    });
+</script>
+
+<script>
+    //3d pie chart for expenses
+    Highcharts.chart('container', {
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: 'Browser market shares at a specific website, 2014'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Browser share',
+            data: [
+                ['Firefox', 45.0],
+                ['IE', 26.8],
+                {
+                    name: 'Chrome',
+                    y: 12.8,
+                    sliced: true,
+                    selected: true
+                },
+                ['Safari', 8.5],
+                ['Opera', 6.2],
+                ['Others', 0.7]
+            ]
+        }]
+    });
+</script>
