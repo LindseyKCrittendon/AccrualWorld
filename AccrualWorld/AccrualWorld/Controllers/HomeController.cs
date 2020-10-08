@@ -41,15 +41,9 @@ namespace AccrualWorld.Controllers
         {
             
             //ApplicationUser loggedInUser = await GetCurrentUserAsync();
-            //INSTANCE OF VIEW MODEL
+            //Getting income totals by month for line graph
              DashboardViewModel ViewModel = new DashboardViewModel();
-            //TODO:: DATE RANGE PICKER FOR GRAPHS AND CHARTS
             var incomes = _context.Incomes.ToList();
-            //   .Include(m => m.User)
-            //adds conditional information for date range picker.
-            //  .Where(income => income.UserId == loggedInUser.Id)
-            //  .ToListAsync();
-            // return View();
             List<double> totals = new List<double>();
             for (int p = 0; p < 12; p++)
             {
@@ -64,6 +58,23 @@ namespace AccrualWorld.Controllers
           
             ViewModel.monthlyTotals = totals;
             ViewData["totals"] = totals.ToArray();
+
+            // getting expense totals by month for line graph
+            var expenses = _context.Expenses.ToList();
+            List<double> eTotals = new List<double>();
+            for (int m = 0; m < 12; m++)
+            {
+                var eNumber = 0.0;
+                for (int x = 0; x < expenses.Count; x++)
+                {
+                    eNumber += expenses.Where(et => et.DateTime.Month == (m + 1)).Sum(et => et.Total);
+                }
+                eTotals.Add(eNumber);
+            }
+
+
+            ViewModel.eMonthlyTotals = eTotals;
+            ViewData["eTotals"] = eTotals.ToArray();
             return View(ViewModel);
             
         }

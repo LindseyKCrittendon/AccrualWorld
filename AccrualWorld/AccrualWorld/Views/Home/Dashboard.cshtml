@@ -12,10 +12,7 @@
 
 <figure class="highcharts-figure">
     <div id="containerLine"></div>
-    <p class="highcharts-description">
-        This chart shows how data labels can be added to the data series. This
-        can increase readability and comprehension for small datasets.
-    </p>
+    
 </figure>
 
 <figure class="highcharts-figure">
@@ -37,30 +34,30 @@
             type: 'line'
         },
         title: {
-            text: 'Monthly Average Temperature'
+            text: 'Expenses and Income'
         },
         subtitle: {
-            text: 'Source: WorldClimate.com'
+            text: ''
         },
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
         yAxis: {
             title: {
-                text: 'Temperature (°C)'
+                text: 'Dollars'
             }
         },
         plotOptions: {
             line: {
                 dataLabels: {
-                    enabled: true
+                    enabled: false
                 },
-                enableMouseTracking: false
+                enableMouseTracking: true
             }
         },
         series: [{
-            name: 'Tokyo',
-            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+            name: 'Expenses',
+            data: [@Model.eMonthlyTotals[0], @Model.eMonthlyTotals[1], @Model.eMonthlyTotals[2], @Model.eMonthlyTotals[3], @Model.eMonthlyTotals[4], @Model.eMonthlyTotals[5], @Model.eMonthlyTotals[6], @Model.eMonthlyTotals[7], @Model.eMonthlyTotals[8], @Model.eMonthlyTotals[9], @Model.eMonthlyTotals[10], @Model.eMonthlyTotals[11]]
         }, {
             name: 'Payments Received',
             data: [@Model.monthlyTotals[0], @Model.monthlyTotals[1], @Model.monthlyTotals[2], @Model.monthlyTotals[3], @Model.monthlyTotals[4], @Model.monthlyTotals[5], @Model.monthlyTotals[6], @Model.monthlyTotals[7], @Model.monthlyTotals[8], @Model.monthlyTotals[9], @Model.monthlyTotals[10], @Model.monthlyTotals[11]]
@@ -80,7 +77,7 @@
             }
         },
         title: {
-            text: 'Browser market shares at a specific website, 2014'
+            text: 'Deductions by Type'
         },
         accessibility: {
             point: {

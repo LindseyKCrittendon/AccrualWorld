@@ -43,5 +43,7 @@ namespace AccrualWorld.Models.DashboardViewModels
         } = new List<Mileage>();
 
         public List<double> monthlyTotals = new List<double>();
+
+        public List<double> eMonthlyTotals = new List<double>();
     }
 }
