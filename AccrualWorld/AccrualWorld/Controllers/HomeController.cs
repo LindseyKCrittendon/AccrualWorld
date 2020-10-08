@@ -37,20 +37,20 @@ namespace AccrualWorld.Controllers
             return View();
         }
 
-        public IActionResult Dashboard()
+        public async Task<IActionResult> DashboardAsync()
         {
             
-            //ApplicationUser loggedInUser = await GetCurrentUserAsync();
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
             //Getting income totals by month for line graph
              DashboardViewModel ViewModel = new DashboardViewModel();
-            var incomes = _context.Incomes.ToList();
+            var incomes = _context.Incomes.Include(u=>u.User).ToList();
             List<double> totals = new List<double>();
             for (int p = 0; p < 12; p++)
             {
                 var number = 0.0;
                 for (int i = 0; i < incomes.Count; i++)
                 {
-                    number += incomes.Where(t => t.DateTime.Month == (p + 1)).Sum(t => t.Total);
+                    number += incomes.Where(t => t.DateTime.Month == (p + 1) && t.UserId == loggedInUser.Id).Sum(t => t.Total);
                 }
                 totals.Add(number);
             }
@@ -60,14 +60,14 @@ namespace AccrualWorld.Controllers
             ViewData["totals"] = totals.ToArray();
 
             // getting expense totals by month for line graph
-            var expenses = _context.Expenses.ToList();
+            var expenses = _context.Expenses.Include(u => u.User).ToList();
             List<double> eTotals = new List<double>();
             for (int m = 0; m < 12; m++)
             {
                 var eNumber = 0.0;
                 for (int x = 0; x < expenses.Count; x++)
                 {
-                    eNumber += expenses.Where(et => et.DateTime.Month == (m + 1)).Sum(et => et.Total);
+                    eNumber += expenses.Where(et => et.DateTime.Month == (m + 1) && et.UserId == loggedInUser.Id).Sum(et => et.Total);
                 }
                 eTotals.Add(eNumber);
             }
