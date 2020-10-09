@@ -70,7 +70,7 @@
             }
         },
         title: {
-            text: 'Deductions by Type'
+            text: 'Deductions For the Year'
         },
         accessibility: {
             point: {
@@ -93,19 +93,21 @@
         },
         series: [{
             type: 'pie',
-            name: 'Browser share',
+            name: 'Deductions',
             data: [
-                ['Firefox', 45.0],
-                ['IE', 26.8],
+                ['Food', @Model.ePercentages[0]],
+                ['Entertainment', @Model.ePercentages[1]],
                 {
-                    name: 'Chrome',
-                    y: 12.8,
+                    name: 'Office Supplies',
+                    y: @Model.ePercentages[2],
                     sliced: true,
                     selected: true
                 },
-                ['Safari', 8.5],
-                ['Opera', 6.2],
-                ['Others', 0.7]
+                ['Cell Phone', @Model.ePercentages[3]],
+                ['Internet Service', @Model.ePercentages[4]],
+                ['Electric', @Model.ePercentages[5]],
+                ['Child Care', @Model.ePercentages[6]],
+                ['Gifts', @Model.ePercentages[7]]
             ]
         }]
     });

@@ -76,6 +76,29 @@ namespace AccrualWorld.Controllers
 
             ViewModel.eMonthlyTotals = eTotals;
             ViewData["eTotals"] = eTotals.ToArray();
+
+            //get percentages of expenses grouped together by type for pie chart
+            var expenseType = _context.ExpenseTypes
+                 .Include(e => e.Expenses)
+                 .ThenInclude(u => User)
+                 .ToList();
+
+            List<double> ePercentages = new List<double>();
+            foreach (var item in expenseType)
+            {
+                //for (int n = 0; n < expenses.Count; n++)
+               // {
+
+
+                    var eTNumber = 0.0;
+
+                    eTNumber = (item.Expenses.Where(ete => ete.DateTime.Year == DateTime.Now.Year && ete.UserId == loggedInUser.Id).Sum(ete => ete.Total)) * 0.1;
+
+                    ePercentages.Add(eTNumber);
+
+               // }
+                
+            }
             return View(ViewModel);
             
         }

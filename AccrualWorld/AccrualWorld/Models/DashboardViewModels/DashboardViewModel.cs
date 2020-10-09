@@ -45,5 +45,7 @@ namespace AccrualWorld.Models.DashboardViewModels
         public List<double> monthlyTotals = new List<double>();
 
         public List<double> eMonthlyTotals = new List<double>();
+
+        public List<double> ePercentages = new List<double>();
     }
 }
