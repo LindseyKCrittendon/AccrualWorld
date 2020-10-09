@@ -1,0 +1,116 @@
+﻿@model AccrualWorld.Models.DashboardViewModels.DashboardViewModel;
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<script src="~/lib/charts/accessibility.js"></script>
+<script src="~/lib/charts/export-data.js"></script>
+<script src="~/lib/charts/exporting.js"></script>
+<script src="~/lib/charts/highcharts.js"></script>
+<script src="~/lib/charts/highcharts-3d.js"></script>
+
+<figure class="highcharts-figure">
+    <div id="containerLine"></div>
+    
+</figure>
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    
+</figure>
+
+<script>
+    //Line Graph for income and expenses
+    Highcharts.chart('containerLine', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Expenses and Income'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Dollars'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: false
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [{
+            name: 'Expenses',
+            data: [@Model.eMonthlyTotals[0], @Model.eMonthlyTotals[1], @Model.eMonthlyTotals[2], @Model.eMonthlyTotals[3], @Model.eMonthlyTotals[4], @Model.eMonthlyTotals[5], @Model.eMonthlyTotals[6], @Model.eMonthlyTotals[7], @Model.eMonthlyTotals[8], @Model.eMonthlyTotals[9], @Model.eMonthlyTotals[10], @Model.eMonthlyTotals[11]]
+        }, {
+            name: 'Payments Received',
+            data: [@Model.monthlyTotals[0], @Model.monthlyTotals[1], @Model.monthlyTotals[2], @Model.monthlyTotals[3], @Model.monthlyTotals[4], @Model.monthlyTotals[5], @Model.monthlyTotals[6], @Model.monthlyTotals[7], @Model.monthlyTotals[8], @Model.monthlyTotals[9], @Model.monthlyTotals[10], @Model.monthlyTotals[11]]
+        }]
+    });
+</script>
+
+<script>
+    //3d pie chart for expenses
+    Highcharts.chart('container', {
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: 'Deductions For the Year'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Deductions',
+            data: [
+                {
+                    name: 'Food',
+                    y: @Model.ePercentages[0],
+                    sliced: true,
+                    selected: true
+                },
+                ['Entertainment', @Model.ePercentages[1]],
+                [
+                  'Office Supplies', @Model.ePercentages[2]
+                ],
+                ['Cell Phone', @Model.ePercentages[3]],
+                ['Internet Service', @Model.ePercentages[4]],
+                ['Electric', @Model.ePercentages[5]],
+                ['Child Care', @Model.ePercentages[6]],
+                ['Gifts', @Model.ePercentages[7]]
+            ]
+        }]
+    });
+</script>
