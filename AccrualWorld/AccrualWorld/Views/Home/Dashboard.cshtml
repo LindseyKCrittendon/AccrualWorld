@@ -95,14 +95,16 @@
             type: 'pie',
             name: 'Deductions',
             data: [
-                ['Food', @Model.ePercentages[0]],
-                ['Entertainment', @Model.ePercentages[1]],
                 {
-                    name: 'Office Supplies',
-                    y: @Model.ePercentages[2],
+                    name: 'Food',
+                    y: @Model.ePercentages[0],
                     sliced: true,
                     selected: true
                 },
+                ['Entertainment', @Model.ePercentages[1]],
+                [
+                  'Office Supplies', @Model.ePercentages[2]
+                ],
                 ['Cell Phone', @Model.ePercentages[3]],
                 ['Internet Service', @Model.ePercentages[4]],
                 ['Electric', @Model.ePercentages[5]],

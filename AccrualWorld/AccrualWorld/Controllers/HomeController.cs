@@ -84,6 +84,16 @@ namespace AccrualWorld.Controllers
                  .ToList();
 
             List<double> ePercentages = new List<double>();
+           // List<double> allExpenseSum = new List<double>();
+            //need a (total of all expenses regardless of type / sum of expenses by expense type)x100 for percentage
+            var totalAllExpensesForYear = 0.0;
+           // foreach (var thing in expenses)
+           // {
+                totalAllExpensesForYear = expenses.Where(xe => xe.DateTime.Year == DateTime.Now.Year && xe.UserId == loggedInUser.Id).Sum(xe => xe.Total);
+                 // allExpenseSum.Add(totalAllExpensesForYear)
+           // }
+            
+            //ViewModel.expenses.Where(xe => xe.DateTime.Year == DateTime.Now.Year).Sum(xe.Total);
             foreach (var item in expenseType)
             {
                 //for (int n = 0; n < expenses.Count; n++)
@@ -92,9 +102,9 @@ namespace AccrualWorld.Controllers
 
                     var eTNumber = 0.0;
 
-                    eTNumber = (item.Expenses.Where(ete => ete.DateTime.Year == DateTime.Now.Year && ete.UserId == loggedInUser.Id).Sum(ete => ete.Total)) * 0.1;
+                    eTNumber = (item.Expenses.Where(ete => ete.DateTime.Year == DateTime.Now.Year && ete.UserId == loggedInUser.Id).Sum(ete => ete.Total)) / (totalAllExpensesForYear);
 
-                    ePercentages.Add(eTNumber);
+                    ViewModel.ePercentages.Add(eTNumber);
 
                // }
                 
