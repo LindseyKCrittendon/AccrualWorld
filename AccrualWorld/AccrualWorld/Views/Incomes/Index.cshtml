@@ -7,7 +7,7 @@
 <h1>Incomes</h1>
 
 <p>
-    <a asp-action="Create">Add Received Payment</a>
+    <a asp-action="Create" class="btn btn-dark">Add Received Payment</a>
 </p>
 
 @using (Html.BeginForm())
@@ -21,7 +21,7 @@
 
 
 
-        <input type="submit" value="Get Payments Between Dates" />
+        <input type="submit" class="btn btn-outline-dark" value="Get Payments Between Dates" />
 
 
 
@@ -72,8 +72,8 @@
 
                     <td>
                         
-                        <a asp-action="Details" asp-route-id="@item.IncomeId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.IncomeId">Delete</a>
+                        <a asp-action="Details" asp-route-id="@item.IncomeId" class="btn-sm btn-outline-info">Details</a> 
+                        <a asp-action="Delete" asp-route-id="@item.IncomeId" class="btn-sm btn-outline-danger">Delete</a>
                     </td>
                 </tr>
 
