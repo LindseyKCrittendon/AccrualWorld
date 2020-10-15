@@ -21,8 +21,8 @@
         <tr>
             <td>
                 <a asp-action="Details" asp-route-id="@item.ExpenseTypeId"> @Html.DisplayFor(modelItem => item.Label)</a>
-                <p><strong>Current Total Expense for Month:</strong> $@item.Expenses.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total)</p>
-                <p><strong>Current Total Expense for Year:</strong> $@item.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total)</p>
+                <p><strong>Current Total Expense for Month:</strong> $@Math.Round(item.Expenses.Where(i => i.DateTime.Month.ToString() == DateTime.Now.Month.ToString() && i.DateTime.Year.ToString() == DateTime.Now.Year.ToString()).Sum(i => i.Total), 2)</p>
+                <p><strong>Current Total Expense for Year:</strong> $@Math.Round(item.Expenses.Where(i => i.DateTime.ToString().Contains(DateTime.Now.Year.ToString())).Sum(i => i.Total), 2)</p>
 
             </td>
             
