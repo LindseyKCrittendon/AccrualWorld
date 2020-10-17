@@ -7,7 +7,7 @@
 <h1>All Mileage</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Add Mileage</a>
+    <a asp-action="Create" class="btn btn-dark">Add Mileage</a>
 </p>
 
 @using (Html.BeginForm())
@@ -21,14 +21,14 @@
 
 
 
-        <input type="submit" value="Get Mileage Between Dates" />
+        <input type="submit" class="btn btn-outline-dark" value="Get Mileage Between Dates" />
 
 
 
     </div>
     //Date range picker with table
 
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered shadow-lg" style="background-color: #F6F1EA">
         <thead>
             <tr>
                 <th>
@@ -79,9 +79,9 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.MileageId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.MileageId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.MileageId">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.MileageId" class="btn-sm btn-outline-dark">Edit</a> 
+                        <a asp-action="Details" asp-route-id="@item.MileageId" class="btn-sm btn-outline-info">Details</a> 
+                        <a asp-action="Delete" asp-route-id="@item.MileageId" class="btn-sm btn-outline-danger">Delete</a>
                     </td>
                 </tr>
             }
@@ -92,7 +92,7 @@
     
 
     <h4>Totals for Time Period</h4>
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered shadow-lg" style="background-color: #F6F1EA">
         <thead>
 
             <tr>

@@ -7,7 +7,7 @@
 
 
 
-<a asp-controller="ExpenseTypes" asp-action="Index">Back</a>
+<a asp-controller="ExpenseTypes" asp-action="Index" class="btn btn-outline-dark">Back</a>
 
 <div>
     <h4>Expenses</h4>
@@ -35,7 +35,7 @@
 
 
 
-        <input type="submit" value="Get Expenses Between Dates" />
+        <input type="submit" class="btn btn-outline-dark" value="Get Expenses Between Dates" />
 
 
 
@@ -43,7 +43,7 @@
     //Date range picker with table
 
 
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered shadow-lg" style="background-color: #F6F1EA">
         <thead>
             <tr>
                 <th>
@@ -56,7 +56,7 @@
                     Uploaded Receipt
                 </th>
                 <th></th>
-            </tr
+            </tr>
         </thead>
         <tbody>
 
@@ -80,8 +80,8 @@
 
                     <td>
                        
-                        <a asp-controller="Expenses" asp-action="Details" asp-route-id="@item.ExpenseId">Details</a> |
-                        <a asp-controller="Expenses" asp-action="Delete" asp-route-id="@item.ExpenseId">Delete</a>
+                        <a asp-controller="Expenses" asp-action="Details" asp-route-id="@item.ExpenseId" class="btn-sm btn-outline-info">Details</a> 
+                        <a asp-controller="Expenses" asp-action="Delete" asp-route-id="@item.ExpenseId" class="btn-sm btn-outline-danger">Delete</a>
                     </td>
 
                 </tr>
@@ -96,7 +96,7 @@
 
 
     <div>
-        <a asp-controller="Expenses" asp-action="Create" class="btn btn-primary">Add an Expense</a>
+        <a asp-controller="Expenses" asp-action="Create" class="btn btn-dark">Add an Expense</a>
 
 
     </div>
